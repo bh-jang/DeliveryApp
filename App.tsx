@@ -4,7 +4,7 @@ import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import {Text, TouchableHighlight, View} from 'react-native';
+import {Modal, Pressable, Text, View} from 'react-native';
 import {useCallback} from 'react';
 
 type RootStackParamList = {
@@ -15,15 +15,46 @@ type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 type DetailsScreenProps = NativeStackScreenProps<ParamListBase, 'Details'>;
 
 function HomeScreen({navigation}: HomeScreenProps) {
-  const onClick = useCallback(() => {
-    navigation.navigate('Details');
-  }, [navigation]);
+  // const onClick = useCallback(() => {
+  //   navigation.navigate('Details');
+  // }, [navigation]);
+
+  const [show, setShow] = React.useState(false);
+  const [show2, setShow2] = React.useState(false);
+
+  const onClick = () => {
+    setShow(true);
+  };
+
+  const onClick2 = () => {
+    setShow2(true);
+  };
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <TouchableHighlight onPress={onClick}>
-        <Text>Home Screen</Text>
-      </TouchableHighlight>
+      <Pressable onPress={onClick}>
+        <Text>Modal Click</Text>
+      </Pressable>
+      <Pressable onPress={onClick2}>
+        <Text>RN Modal Click</Text>
+      </Pressable>
+      {show && (
+        <View
+          style={{
+            backgroundColor: 'yellow',
+            position: 'absolute',
+            flex: 1,
+            width: '90%',
+            height: '90%',
+          }}>
+          <Text>Modal</Text>
+        </View>
+      )}
+      <Modal visible={show2}>
+        <View>
+          <Text>RN Modal</Text>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -35,13 +66,12 @@ function DetailsScreen({navigation}: DetailsScreenProps) {
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <TouchableHighlight onPress={onClick}>
+      <Pressable onPress={onClick}>
         <Text>Details Screen</Text>
-      </TouchableHighlight>
+      </Pressable>
     </View>
   );
 }
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 function App() {
   return (
